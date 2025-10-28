@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import LandingPage from './components/LandingPage'
-import RegistrationPage from './components/RegistrationPage'
-import LoginPage from './components/LoginPage'
-import BabyInfoPage from './components/BabyInfoPage'
-import AddAnotherChildPage from './components/AddAnotherChildPage'
-import Dashboard from './components/Dashboard'
-import ResourcesPage from './components/ResourcesPage'
+import 'react-calendar/dist/Calendar.css';
+import Header from './Components/Header'
+import Footer from './Components/Footer'
+import LandingPage from './Components/LandingPage'
+import RegistrationPage from './Components/RegistrationPage'
+import LoginPage from './Components/LoginPage'
+import BabyInfoPage from './Components/BabyInfoPage'
+import AddAnotherChildPage from './Components/AddAnotherChildPage'
+import Dashboard from './Components/Dashboard'
+import ResourcesPage from './Components/ResourcesPage'
 
 function App() {
   return (

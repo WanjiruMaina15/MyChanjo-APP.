@@ -1,5 +1,6 @@
 import React from "react";
-import { P } from "./ReusableComonents/Typography";
+import { P } from "./Typography";
+
 
 export default function Input({
   label,

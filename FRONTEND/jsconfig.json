@@ -1,15 +1,14 @@
 {
-  "compilerOptions": {  
+  "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["frontend/src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["frontend/src"],
   "exclude": ["node_modules", "build", "dist"]
 }
