@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 
 // POST - Add new user
 
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     console.log(' New user registration request received:', req.body); //  log incoming data
 
@@ -50,6 +50,30 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.error('Error creating user:', err.message); //  log any errors
     res.status(400).json({ message: err.message });
+  }
+});
+//login api
+//POST - User login
+// POST /api/users/login
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Return token or user info
+    res.json({
+      token: "sample-jwt-token", // replace with real JWT in production
+      fullName: user.fullName,
+      id: user._id
+    });
+  } catch (err) {
+    console.error("Login error:", err.message);
+    res.status(500).json({ message: err.message });
   }
 });
 

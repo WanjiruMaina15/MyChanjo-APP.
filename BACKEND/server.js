@@ -2,11 +2,18 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./Config/db');
+const cors = require('cors');
 
 //LOAD ENV VARIABLES
 dotenv.config();
 //
 const app = express();
+//MIDDLEWARE TO ENABLE CORS
+// ✅ Enable CORS
+app.use(cors({
+  origin: 'http://localhost:5173', // your React frontend URL
+  credentials: true
+}));
 //MIDDLEWARE TO PARSE JSON REQUESTS
 app.use(express.json());
 //connect to database ie MongoDB

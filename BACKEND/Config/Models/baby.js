@@ -1,29 +1,44 @@
-//import mongoose
 const mongoose = require('mongoose');
 
-// Baby Schema
-const babySchema = new mongoose.Schema({
+const vaccineScheduleSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  yearOfBirth: {
-    type: Number,
+  date: {
+    type: Date,
     required: true,
   },
-  parentName: {
+  status: {
+    type: String,
+    enum: ['pending', 'completed', 'missed'],
+    default: 'pending',
+  },
+  vaccineId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vaccine',
+  },
+});
+
+const babySchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Assuming you have a User model
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
-  ageinMonths: {
-    type: Number,
+  dateOfBirth: {
+    type: Date,
     required: true,
   },
+  vaccineSchedule: [vaccineScheduleSchema],
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-// Export the model
 module.exports = mongoose.model('Baby', babySchema);
