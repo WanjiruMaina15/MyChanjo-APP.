@@ -1,132 +1,203 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
 import { H, P } from "./ReusableComponents/Typography";
 import Button from "./ReusableComponents/Buttons";
 import Card from "./ReusableComponents/Cards";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import api from "../Apis/axios";
+import VaccineList from "./VaccineList"; 
+import BabyProfile from "./BabyProfile";
+import Header from "./Header";
+import VaccineCalendar from "./VaccinesCalendar";
+import { useAuth, useClerk } from '@clerk/clerk-react';
 
-export default function VaccineScheduleDashboard() {
+export default function Dashboard() {
   const navigate = useNavigate();
   const [baby, setBaby] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [vaccines, setVaccines] = useState([]); // Keep if needed, or remove if unused
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [pendingVaccines, setPendingVaccines] = useState([]);
+  const [completedVaccines, setCompletedVaccines] = useState([]);
+  const { signOut } = useClerk();
 
-  // Fetch the baby's vaccine schedule
+  const { userId, user } = useAuth();
+
+  const userFirstName =
+    user?.firstName ||
+    user?.emailAddresses?.[0]?.emailAddress.split("@")[0] ||
+    "Parent";
+
+  // ✅ FIXED FETCH LOGIC
   useEffect(() => {
-    const fetchBabyData = async () => {
+    const fetchBaby = async () => {
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch("http://localhost:5000/api/babies"); // adjust your backend route
-        const data = await response.json();
-        if (data && data.baby) {
-          setBaby(data.baby);
+        setLoading(true);
+        const res = await api.get(`/babies/user/${userId}`);
+
+        // Handle case where response might be { babies: [...] } or just [...]
+        const babiesData = res.data.babies || res.data;
+
+        if (Array.isArray(babiesData) && babiesData.length > 0) {
+          const babyData = babiesData[0];
+
+          // 1. THIS WAS MISSING! We must save the baby to state.
+          setBaby(babyData); 
+
+          const pending = babyData.vaccineSchedule.filter(
+            (v) => v.status === "Pending" || v.status === "pending"
+          );
+          const completed = babyData.vaccineSchedule.filter(
+            (v) => v.status === "Completed" || v.status === "completed"
+          );
+
+          setPendingVaccines(pending);
+          setCompletedVaccines(completed);
+        } else {
+          setBaby(null);
         }
-      } catch (error) {
-        console.error("Error fetching baby data:", error);
+      } catch (err) {
+        console.error("Error fetching baby:", err);
+        setError(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchBabyData();
-  }, []);
 
-  // Filter vaccines by status
-  const pendingVaccines = baby?.vaccineSchedule?.filter(v => v.status === "pending") || [];
-  const completedVaccines = baby?.vaccineSchedule?.filter(v => v.status === "completed") || [];
+    fetchBaby();
+  }, [userId]);
 
-  // Handle marking vaccine as completed
-  const markAsCompleted = async (vaccineId) => {
+  // ✅ FIXED UPDATE LOGIC (Added newStatus parameter)
+  const handleVaccineUpdate = async (vaccineId, newStatus) => {
     try {
-      await fetch(`http://localhost:5000/api/vaccines/${vaccineId}/complete`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-      });
-      // Update UI instantly
-      setBaby(prev => ({
-        ...prev,
-        vaccineSchedule: prev.vaccineSchedule.map(v =>
-          v.vaccineId === vaccineId ? { ...v, status: "completed" } : v
-        ),
-      }));
+      // API Call
+      await api.put(`/vaccines/${vaccineId}`, { status: newStatus });
+
+      // Helper function to move items between lists
+      const moveVaccine = (targetListSetter, sourceListSetter, status) => {
+        let itemToMove;
+
+        sourceListSetter((prevSource) => {
+          const index = prevSource.findIndex((v) => v._id === vaccineId);
+          if (index !== -1) {
+            itemToMove = prevSource[index];
+            return prevSource.filter((v) => v._id !== vaccineId);
+          }
+          return prevSource;
+        });
+
+        if (itemToMove) {
+          targetListSetter((prevTarget) => [
+            ...prevTarget,
+            { ...itemToMove, status },
+          ]);
+        }
+      };
+
+      if (newStatus === "completed") {
+        moveVaccine(setCompletedVaccines, setPendingVaccines, newStatus);
+      } else if (newStatus === "pending") {
+        moveVaccine(setPendingVaccines, setCompletedVaccines, newStatus);
+      }
     } catch (error) {
       console.error("Error updating vaccine status:", error);
     }
   };
 
-  if (loading) return <P>Loading schedule...</P>;
-  if (!baby) return <P>No baby data found.</P>;
-
-  return (
-    <div className="p-6 bg-[#f9fbfd] min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <H text={`Vaccine Schedule for ${baby.name}`} />
-        <Button text="Add New Baby" onClick={() => navigate("/add-baby")} />
+  // Handle loading and error states
+  if (loading) return <div className="p-10 text-center"><P>Loading baby info...</P></div>;
+  
+  // If no baby is found, show the "Add Baby" card
+  if (!baby) {
+    return (
+      <div className="min-h-screen bg-[#f4f8fb] pt-20 px-4">
+        <Card className="p-10 max-w-lg mx-auto text-center space-y-4 shadow-xl">
+          <H as="h2" className="text-3xl font-extrabold text-sky-700">
+            Welcome to MyChanjo App!
+          </H>
+          <P className="text-lg text-gray-600">
+            Create a profile for your baby to start tracking their schedule.
+          </P>
+          <Button
+            onClick={() => navigate("/add-baby")}
+            variant="primary"
+          >
+            Add Your Baby Now 👶
+          </Button>
+        </Card>
       </div>
+    );
+  }
 
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Left: Calendar */}
-        <Card>
-          <H text="Calendar Overview" size="lg" />
-          <div className="mt-4">
-            <Calendar
-              value={selectedDate}
-              onChange={setSelectedDate}
-              tileClassName={({ date }) => {
-                const hasVaccine = baby.vaccineSchedule.some(v =>
-                  new Date(v.date).toDateString() === date.toDateString()
-                );
-                return hasVaccine ? "bg-blue-200 rounded-full" : "";
-              }}
-            />
-          </div>
-        </Card>
+  // Render the Dashboard
+  return (
+    <div className="min-h-screen bg-[#f4f8fb]">
+      <Header />
+      
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-extrabold text-gray-800">
+            👋 Welcome Back, {userFirstName}
+            </h1>
+            <Button onClick={() => signOut({ redirectUrl: "/" })} variant="outline">
+            Log Out
+            </Button>
+        </div>
 
-        {/* Right: Vaccine List */}
-        <Card>
-          <H text="Upcoming Vaccines" size="lg" />
-          <div className="mt-4 space-y-3">
-            {pendingVaccines.length === 0 ? (
-              <P>No pending vaccines 🎉</P>
-            ) : (
-              pendingVaccines.map((v) => (
-                <div
-                  key={v.vaccineId}
-                  className="flex justify-between items-center border-b pb-2"
-                >
-                  <div>
-                    <P text={v.name} />
-                    <P
-                      text={`Due: ${new Date(v.date).toLocaleDateString()}`}
-                      className="text-sm text-gray-500"
-                    />
-                  </div>
-                  <Button
-                    text="Mark as Done"
-                    onClick={() => markAsCompleted(v.vaccineId)}
-                    variant="secondary"
-                  />
-                </div>
-              ))
-            )}
-          </div>
+        <div className="space-y-8">
+            {/* Baby Profile Section */}
+            <Card className="p-6">
+            <div className="mt-6">
+                <BabyProfile baby={baby} />
+            </div>
+            </Card>
 
-          <H text="Completed Vaccines" size="lg" className="mt-6" />
-          <div className="mt-2 space-y-2">
-            {completedVaccines.length === 0 ? (
-              <P>No completed vaccines yet.</P>
-            ) : (
-              completedVaccines.map((v) => (
-                <P
-                  key={v.vaccineId}
-                  text={`${v.name} - ${new Date(v.date).toLocaleDateString()}`}
-                  className="text-green-600"
+            {/* Calendar Section */}
+            <Card className="p-6 mb-8">
+                <H size="lg" className="mb-4">
+                    Vaccination Calendar
+                </H>
+                <VaccineCalendar
+                    baby={baby}
+                    onChange={setSelectedDate}
+                    value={selectedDate}
+                    className="mx-auto"
                 />
-              ))
-            )}
-          </div>
-        </Card>
+            </Card>
+
+            {/* Vaccine Schedule Section */}
+            <div className="grid md:grid-cols-2 gap-6">
+            {/* Pending Vaccines */}
+            <VaccineList
+                vaccines={pendingVaccines}
+                title="Pending Vaccines"
+                emptyMessage="No pending vaccines 🎉"
+                onVaccineUpdate={handleVaccineUpdate}
+            />
+
+            {/* Completed Vaccines */}
+            <VaccineList
+                vaccines={completedVaccines}
+                title="Completed Vaccines"
+                emptyMessage="No completed vaccines yet"
+                onVaccineUpdate={handleVaccineUpdate}
+            />
+            </div>
+
+            <div className="mt-8 text-center">
+                <Button onClick={() => navigate("/resources")}>
+                    Explore Resources
+                </Button>
+            </div>
+        </div>
       </div>
     </div>
   );
 }
-// This component displays a dashboard with a calendar and vaccine schedule.

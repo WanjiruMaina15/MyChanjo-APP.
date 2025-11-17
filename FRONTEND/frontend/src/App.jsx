@@ -2,31 +2,74 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import 'react-calendar/dist/Calendar.css';
 import Header from './Components/Header'
 import Footer from './Components/Footer'
-import LandingPage from './Components/LandingPage'
-import RegistrationPage from './Components/RegistrationPage'
-import LoginPage from './Components/LoginPage'
-import BabyInfoPage from './Components/BabyInfoPage'
-import AddAnotherChildPage from './Components/AddAnotherChildPage'
+import SignInPage from './Components/Auth'
 import Dashboard from './Components/Dashboard'
-import ResourcesPage from './Components/ResourcesPage'
+import Resources from './Components/ResourcesPage'
+import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
+import BabyInfoPage from './Components/BabyInfoPage';
 
-function App() {
+
+export default function App() {
   return (
     <Router>
-      <Routes>
-        {/* Pages WITHOUT header/footer */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/register" element={<RegistrationPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        
-        {/* Pages WITH header and footer */}
-        <Route path="/baby-info" element={<><Header /><BabyInfoPage /><Footer /></>} />
-        <Route path="/add-child" element={<><Header /><AddAnotherChildPage /><Footer /></>} />
-        <Route path="/dashboard" element={<><Header /><Dashboard /><Footer /></>} />
-        <Route path="/resources" element={<><Header /><ResourcesPage /><Footer /></>} />
-      </Routes>
-    </Router>
-  )
-}
+      <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+        <main className="flex-grow p-4 md:p-8">
+          <Routes>
+            
+            <Route path="/register" element={<SignInPage />} />
+            <Route path="/login" element={<SignInPage />} />
 
-export default App
+            <Route path="/add-baby" element={
+      <>
+        <SignedIn>
+            <BabyInfoPage /> 
+        </SignedIn>
+        <SignedOut>
+            <RedirectToSignIn /> 
+        </SignedOut>
+      </>
+    } />
+
+            <Route
+              path="/dashboard"
+              element={
+                <>
+                  <SignedIn> 
+                      <Dashboard /> 
+                  </SignedIn>
+                  <SignedOut>
+                      <RedirectToSignIn /> 
+                  </SignedOut>
+                </>
+              }
+            />
+
+            <Route path="/" element={
+             <>
+               <SignedIn>
+                   <Dashboard />
+               </SignedIn>
+               <SignedOut>
+                   <RedirectToSignIn />
+               </SignedOut>
+             </>
+            } />
+            <Route path="/resources" element={
+             <>
+               <SignedIn>
+                   <Resources />
+               </SignedIn>
+               <SignedOut>
+                   <RedirectToSignIn />
+               </SignedOut>
+             </>
+            } />
+
+            
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  );
+}

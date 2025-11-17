@@ -3,7 +3,7 @@ import { H, P } from "./ReusableComponents/Typography";
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 w-full bg-[#7FDBDA] text-[#0b2545] py-4 shadow-md z-50">
+    <header className="sticky top-0 left-0 w-full bg-[#7FDBDA] text-[#0b2545] py-1 shadow-md z-50">
       <div className="container mx-auto text-center">
         <H as="h1" className="text-3xl font-bold tracking-wide text-white">
           MyChanjo
