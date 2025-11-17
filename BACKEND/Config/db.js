@@ -1,4 +1,3 @@
-//BACKEND/Config/db.js
 const mongoose = require('mongoose');
 //LOAD ENV VARIABLES
 require('dotenv').config();
@@ -16,4 +15,4 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+module.exports = connectDB; 

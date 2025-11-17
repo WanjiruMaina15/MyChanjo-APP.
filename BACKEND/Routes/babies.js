@@ -3,10 +3,7 @@ const router = express.Router();
 const Baby = require('../Config/Models/baby');
 const Vaccine = require('../Config/Models/vaccine');
 
-/**
- * Helper: Convert recommendedAge string (e.g. "At birth", "6 weeks", "9 months")
- * into a numeric value (in months) for calculation.
- */
+
 const parseRecommendedAge = (ageString) => {
   if (!ageString) return 0;
 
@@ -26,12 +23,10 @@ const parseRecommendedAge = (ageString) => {
     return years * 12;
   }
 
-  return 0; // Default if text not recognized
+  return 0; 
 };
 
-/**
- * Helper: Add months to a date accurately
- */
+
 const addMonthsToDate = (startDate, months) => {
   const newDate = new Date(startDate);
   newDate.setMonth(newDate.getMonth() + months);
@@ -39,31 +34,46 @@ const addMonthsToDate = (startDate, months) => {
 };
 
 
-// GET /api/babies — fetch all babies (or one baby if needed)
-router.get('/', async (req, res) => {
+
+router.get("/user/:userId", async (req, res) => {
   try {
-    const babies = await Baby.find().populate('vaccineSchedule.vaccineId');
-    res.status(200).json({ success: true, babies });
+    // FIX: Filtering strictly by the Clerk User ID 
+    const babies = await Baby.find({ clerkUserId: req.params.userId }).populate('vaccineSchedule.vaccineId');
+    
+    // Safety check: if no babies found, return empty array
+    if (!babies || babies.length === 0) {
+        return res.status(200).json({ babies: [] });
+    }
+
+    res.status(200).json({babies});
   } catch (error) {
-    console.error('Error fetching babies:', error.message);
-    res.status(500).json({ message: 'Server error: Could not fetch babies.' });
+    // Log the actual server error
+    console.error("Error fetching babies for user:", error.message); 
+    res.status(500).json({ message: "Server error: Could not fetch babies." });
   }
 });
 
-// POST /api/babies — create baby and generate personalized schedule
-router.post('/', async (req, res) => {
-  const userId = req.user ? req.user.id : 'MOCK_USER_ID_123';
-  const { name, dateOfBirth } = req.body;
 
-  if (!name || !dateOfBirth) {
-    return res.status(400).json({ message: "Baby's name and dateOfBirth are required." });
+// =======================================================
+// 3. POST ROUTE (Create Baby and Schedule)
+// =======================================================
+
+// POST /api/babies
+router.post('/', async (req, res) => {
+  
+  // Destructure the Clerk ID from the body
+  const { name, dateOfBirth, clerkUserId } = req.body; 
+
+  if (!name || !dateOfBirth || !clerkUserId) { 
+    return res.status(400).json({ message: "Baby details and parent ID are required." });
   }
 
   try {
+    // Fetch all vaccine templates from the database
     const generalSchedule = await Vaccine.find({});
     const birthDate = new Date(dateOfBirth);
 
-    // Generate vaccine schedule using parsed string-based ages
+    // Generate personalized schedule
     const personalizedSchedule = generalSchedule.map((template) => {
       const monthsToAdd = parseRecommendedAge(template.recommendedAge);
       const dueDate = addMonthsToDate(birthDate, monthsToAdd);
@@ -76,8 +86,10 @@ router.post('/', async (req, res) => {
       };
     });
 
+    // Create the new baby document
     const newBaby = new Baby({
-      user: userId,
+      // FIX: Store the Clerk ID in the correct schema field
+      clerkUserId: clerkUserId, 
       name,
       dateOfBirth: birthDate,
       vaccineSchedule: personalizedSchedule,
@@ -94,5 +106,6 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Server error: Failed to generate schedule.' });
   }
 });
+
 
 module.exports = router;
