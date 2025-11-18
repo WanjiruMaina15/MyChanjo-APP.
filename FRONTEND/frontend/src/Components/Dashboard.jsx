@@ -8,7 +8,7 @@ import "react-calendar/dist/Calendar.css";
 import api from "../Apis/axios";
 import VaccineList from "./VaccineList"; 
 import BabyProfile from "./BabyProfile";
-import Header from "./Header";
+
 import VaccineCalendar from "./VaccinesCalendar";
 import { useAuth, useClerk } from '@clerk/clerk-react';
 
@@ -136,8 +136,7 @@ export default function Dashboard() {
 
   // Render the Dashboard
   return (
-    <div className="min-h-screen bg-[#f4f8fb]">
-      <Header />
+    <div className="min-h-screen bg-[#f4f8fb] pt-10">
       
       <div className="p-6 max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
