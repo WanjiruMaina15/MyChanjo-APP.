@@ -11,7 +11,7 @@ const app = express();
 //MIDDLEWARE TO ENABLE CORS
 // ✅ Enable CORS
 app.use(cors({
-  origin: 'my-chanjo-app.vercel.app', // your React frontend URL
+  origin: 'https://my-chanjo-app.vercel.app', // your React frontend URL
   credentials: true
 }));
 //MIDDLEWARE TO PARSE JSON REQUESTS
@@ -34,7 +34,7 @@ app.use('/api/resources', resourceRoutes);
 app.get('/', (req, res) => {
   res.send('Welcome to  My Chanjo Backend API');
 });
-//START THE SERVER
+
 const PORT= process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(` Server is running on port ${PORT}`);

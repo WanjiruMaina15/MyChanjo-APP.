@@ -12,7 +12,7 @@ const parseRecommendedAge = (ageString) => {
   if (lower.includes('birth')) return 0;
   if (lower.includes('week')) {
     const weeks = parseFloat(lower.replace(/[^\d.]/g, '')) || 0;
-    return weeks / 4.345; // 1 month ≈ 4.345 weeks
+    return weeks / 4.345; 
   }
   if (lower.includes('month')) {
     const months = parseFloat(lower.replace(/[^\d.]/g, '')) || 0;
@@ -37,31 +37,26 @@ const addMonthsToDate = (startDate, months) => {
 
 router.get("/user/:userId", async (req, res) => {
   try {
-    // FIX: Filtering strictly by the Clerk User ID 
+ 
     const babies = await Baby.find({ clerkUserId: req.params.userId }).populate('vaccineSchedule.vaccineId');
     
-    // Safety check: if no babies found, return empty array
+   
     if (!babies || babies.length === 0) {
         return res.status(200).json({ babies: [] });
     }
 
     res.status(200).json({babies});
   } catch (error) {
-    // Log the actual server error
+    
     console.error("Error fetching babies for user:", error.message); 
     res.status(500).json({ message: "Server error: Could not fetch babies." });
   }
 });
 
 
-// =======================================================
-// 3. POST ROUTE (Create Baby and Schedule)
-// =======================================================
 
-// POST /api/babies
 router.post('/', async (req, res) => {
   
-  // Destructure the Clerk ID from the body
   const { name, dateOfBirth, clerkUserId } = req.body; 
 
   if (!name || !dateOfBirth || !clerkUserId) { 
@@ -69,11 +64,9 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    // Fetch all vaccine templates from the database
     const generalSchedule = await Vaccine.find({});
     const birthDate = new Date(dateOfBirth);
 
-    // Generate personalized schedule
     const personalizedSchedule = generalSchedule.map((template) => {
       const monthsToAdd = parseRecommendedAge(template.recommendedAge);
       const dueDate = addMonthsToDate(birthDate, monthsToAdd);
@@ -86,9 +79,9 @@ router.post('/', async (req, res) => {
       };
     });
 
-    // Create the new baby document
+   
     const newBaby = new Baby({
-      // FIX: Store the Clerk ID in the correct schema field
+      
       clerkUserId: clerkUserId, 
       name,
       dateOfBirth: birthDate,
