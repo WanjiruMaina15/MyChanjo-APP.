@@ -21,8 +21,8 @@ export default function App() {
         <main className="flex-grow p-4 md:p-8">
           <Routes>
             
-            <Route path="/register" element={<SignInPage />} />
-            <Route path="/login" element={<SignInPage />} />
+            <Route path="/register/*" element={<SignInPage />} />
+            <Route path="/login/*" element={<SignInPage />} />
 
             <Route path="/add-baby" element={
               <>
