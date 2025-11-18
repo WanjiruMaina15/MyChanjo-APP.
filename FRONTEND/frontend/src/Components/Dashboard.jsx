@@ -15,7 +15,7 @@ import { useAuth, useClerk } from '@clerk/clerk-react';
 export default function Dashboard() {
   const navigate = useNavigate();
   const [baby, setBaby] = useState(null);
-  const [vaccines, setVaccines] = useState([]); // Keep if needed, or remove if unused
+  const [vaccines, setVaccines] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -30,7 +30,6 @@ export default function Dashboard() {
     user?.emailAddresses?.[0]?.emailAddress.split("@")[0] ||
     "Parent";
 
-  // ✅ FIXED FETCH LOGIC
   useEffect(() => {
     const fetchBaby = async () => {
       if (!userId) {
@@ -42,13 +41,13 @@ export default function Dashboard() {
         setLoading(true);
         const res = await api.get(`/babies/user/${userId}`);
 
-        // Handle case where response might be { babies: [...] } or just [...]
+       
         const babiesData = res.data.babies || res.data;
 
         if (Array.isArray(babiesData) && babiesData.length > 0) {
           const babyData = babiesData[0];
 
-          // 1. THIS WAS MISSING! We must save the baby to state.
+         
           setBaby(babyData); 
 
           const pending = babyData.vaccineSchedule.filter(
@@ -74,13 +73,12 @@ export default function Dashboard() {
     fetchBaby();
   }, [userId]);
 
-  // ✅ FIXED UPDATE LOGIC (Added newStatus parameter)
+  
   const handleVaccineUpdate = async (vaccineId, newStatus) => {
     try {
-      // API Call
+      
       await api.put(`/vaccines/${vaccineId}`, { status: newStatus });
 
-      // Helper function to move items between lists
       const moveVaccine = (targetListSetter, sourceListSetter, status) => {
         let itemToMove;
 
@@ -111,10 +109,10 @@ export default function Dashboard() {
     }
   };
 
-  // Handle loading and error states
+  
   if (loading) return <div className="p-10 text-center"><P>Loading baby info...</P></div>;
   
-  // If no baby is found, show the "Add Baby" card
+ 
   if (!baby) {
     return (
       <div className="min-h-screen bg-[#f4f8fb] pt-20 px-4">
@@ -174,7 +172,7 @@ export default function Dashboard() {
 
             {/* Vaccine Schedule Section */}
             <div className="grid md:grid-cols-2 gap-6">
-            {/* Pending Vaccines */}
+            
             <VaccineList
                 vaccines={pendingVaccines}
                 title="Pending Vaccines"
@@ -182,7 +180,7 @@ export default function Dashboard() {
                 onVaccineUpdate={handleVaccineUpdate}
             />
 
-            {/* Completed Vaccines */}
+           
             <VaccineList
                 vaccines={completedVaccines}
                 title="Completed Vaccines"

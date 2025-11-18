@@ -44,9 +44,9 @@ export default function BabyInfoPage() {
   const [error, setError] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [calculatedAge, setCalculatedAge] = useState("");
-  // We removed showPreview state because we are redirecting immediately
+ 
 
-  // Check if baby exists on load
+  
   useEffect(() => {
     const checkExistingBaby = async () => {
       try {
@@ -55,7 +55,7 @@ export default function BabyInfoPage() {
 
         const response = await api.get(`/babies/user/${currentUserId}`);
 
-        // If baby exists → redirect
+        
         if (response.data && response.data.length > 0) {
           const existingBaby = response.data[0];
           localStorage.setItem("currentBabyId", existingBaby._id);
@@ -134,7 +134,7 @@ export default function BabyInfoPage() {
     }
   };
 
-  // 🧩 CORRECTED FORM SUBMISSION
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -164,7 +164,6 @@ export default function BabyInfoPage() {
 
       const response = await api.post("/babies", payload);
 
-      // Accept any success status 200-299
       if (response.status >= 200 && response.status < 300) {
         const baby = response.data.baby || response.data;
         
@@ -172,7 +171,7 @@ export default function BabyInfoPage() {
           localStorage.setItem("currentBabyId", baby._id);
         }
         
-        // NUCLEAR OPTION: Direct browser navigation
+       
         window.location.href = "/dashboard";
       }
     } catch (err) {
@@ -181,8 +180,7 @@ export default function BabyInfoPage() {
         err.response?.data?.message ||
           "Server Error: Could not save baby. Check backend logs."
       );
-    } finally {
-      // Only set loading to false if we didn't crash out of the page
+    } finally {e
       setLoading(false);
     }
   };
@@ -199,7 +197,6 @@ export default function BabyInfoPage() {
           Please provide your baby's details 💜
         </P>
 
-        {/* Image Upload Section */}
         <div className="flex flex-col items-center mb-6">
           {imagePreview ? (
             <div className="relative">
