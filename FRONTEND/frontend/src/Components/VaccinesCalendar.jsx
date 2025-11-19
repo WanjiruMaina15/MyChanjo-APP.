@@ -4,7 +4,7 @@ import { P, H } from './ReusableComponents/Typography';
 import Card from './ReusableComponents/Cards';
 import 'react-calendar/dist/Calendar.css'
 
-// Helper to check if two dates are the same day
+
 const isSameDay = (date1, date2) =>
   date1.getFullYear() === date2.getFullYear() &&
   date1.getMonth() === date2.getMonth() &&
@@ -34,14 +34,14 @@ export default function VaccineCalendar({ baby }) {
 
     let colorClass = '';
     switch (vaccineEvent.status) {
-      case 'done':
-        colorClass = 'bg-green-500';
+      case 'completed':
+        colorClass = 'bg-[#b3cde0]';
         break;
       case 'pending':
-        colorClass = 'bg-amber-400';
+        colorClass = 'bg-[#c8a2c8]';
         break;
-      case 'missed':
-        colorClass = 'bg-[#9b5edc]';
+      case 'overdue':
+        colorClass = 'bg-[#0b2545]';
         break;
       default:
         return null;
@@ -59,7 +59,7 @@ export default function VaccineCalendar({ baby }) {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">
-      {/* ---------------- CALENDAR SECTION ---------------- */}
+      
       <div className="lg:w-1/2 w-full">
         <H as="h3" className="text-xl mb-3 text-[#0b2545]">
           {baby.name}'s Vaccination Timeline
@@ -84,7 +84,6 @@ export default function VaccineCalendar({ baby }) {
         </Card>
       </div>
 
-      {/* ---------------- VACCINE DETAILS SECTION ---------------- */}
       <div className="lg:w-1/2 w-full">
         <H as="h3" className="text-xl mb-3 text-[#0b2545]">
           Details for {value.toDateString()}
@@ -97,21 +96,21 @@ export default function VaccineCalendar({ baby }) {
                   key={index}
                   className={`p-3 rounded-lg border transition-all duration-300
                     ${
-                      v.status === 'done'
-                        ? 'bg-green-50 border-green-300'
+                      v.status === 'completed'
+                        ? 'bg-[#e6f2f8] border-[#b3cde0]'
                         : v.status === 'pending'
-                        ? 'bg-amber-50 border-amber-300'
-                        : 'bg-purple-50 border-[#9b5edc]'
+                        ? 'bg-[#f5ebf5] border-[#c8a2c8]'
+                        : 'bg-[#e8eaf6] border-[#0b2545]'
                     }`}
                 >
                   <P className="font-semibold text-[#0b2545]">{v.name}</P>
                   <P
                     className={`text-sm font-medium ${
-                      v.status === 'done'
-                        ? 'text-green-600'
+                      v.status === 'completed'
+                        ? 'text-[#0b2545]'
                         : v.status === 'pending'
-                        ? 'text-amber-600'
-                        : 'text-[#9b5edc]'
+                        ? 'text-[#c8a2c8]'
+                        : 'text-[#0b2545]'
                     }`}
                   >
                     Status: {v.status.charAt(0).toUpperCase() + v.status.slice(1)}
@@ -123,27 +122,26 @@ export default function VaccineCalendar({ baby }) {
               ))}
             </div>
           ) : (
-            <P className="text-gray-500">
+            <P className="text-[#0b2545]">
               Select a date on the calendar to view vaccine details.
             </P>
           )}
         </Card>
 
-        {/* ---------------- LEGEND ---------------- */}
         <div className="mt-6">
           <P className="text-sm font-semibold text-[#0b2545] mb-2">Legend</P>
           <div className="flex gap-6 text-xs items-center">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500" />
-              <span>Done</span>
+              <div className="w-3 h-3 rounded-full bg-[#b3cde0]" />
+              <span>Completed</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-amber-400" />
+              <div className="w-3 h-3 rounded-full bg-[#c8a2c8]" />
               <span>Pending</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#9b5edc]" />
-              <span>Missed</span>
+              <div className="w-3 h-3 rounded-full bg-[#0b2545]" />
+              <span>Overdue</span>
             </div>
           </div>
         </div>

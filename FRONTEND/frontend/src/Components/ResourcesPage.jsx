@@ -61,14 +61,14 @@ const Resources = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tips.length > 0 ? (
             tips.map((tip, index) => (
-              <Card key={index} className="p-4 bg-white border border-gray-200 hover:shadow-xl transition duration-300">
-                <h3 className="font-semibold text-lg text-sky-800 mb-1">Tip #{index + 1}</h3>
-                <P className="text-gray-700">{tip}</P>
+              <Card key={index} className="p-4 bg-white border border-[#b3cde0] hover:shadow-xl transition duration-300">
+                <h3 className="font-semibold text-lg text-[#0b2545] mb-1">Tip #{index + 1}</h3>
+                <P className="text-[#0b2545]">{tip}</P>
               </Card>
             ))
           ) : (
             <div className="md:col-span-3 text-center p-8 bg-white rounded-lg shadow">
-              <P className="text-gray-500">No baby care tips available yet. Check back soon!</P>
+              <P className="text-[#0b2545]">No baby care tips available yet. Check back soon!</P>
             </div>
           )}
         </div>
@@ -79,18 +79,18 @@ const Resources = () => {
         <div className="space-y-4">
           {faqs.length > 0 ? (
             faqs.map((item, index) => (
-              <Card key={index} className="p-5 bg-white border border-gray-200 shadow hover:shadow-lg transition duration-300">
-                <h3 className="font-bold text-xl text-indigo-700 mb-2">
+              <Card key={index} className="p-5 bg-white border border-[#b3cde0] shadow hover:shadow-lg transition duration-300">
+                <h3 className="font-bold text-xl text-[#c8a2c8] mb-2">
                   Q{index + 1}: {item.question}
                 </h3>
-                <div className="border-t border-gray-100 pt-3">
-                  <p className="text-gray-700 leading-relaxed">{item.answer}</p>
+                <div className="border-t border-[#b3cde0] pt-3">
+                  <p className="text-[#0b2545] leading-relaxed">{item.answer}</p>
                 </div>
               </Card>
             ))
           ) : (
             <div className="text-center p-8 bg-white rounded-lg shadow">
-              <P className="text-gray-500">No Frequently Asked Questions available yet.</P>
+              <P className="text-[#0b2545]">No Frequently Asked Questions available yet.</P>
             </div>
           )}
         </div>

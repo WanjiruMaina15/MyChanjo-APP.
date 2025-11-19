@@ -15,14 +15,11 @@ import { useAuth, useClerk } from '@clerk/clerk-react';
 export default function Dashboard() {
   const navigate = useNavigate();
   const [baby, setBaby] = useState(null);
-  const [vaccines, setVaccines] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [pendingVaccines, setPendingVaccines] = useState([]);
   const [completedVaccines, setCompletedVaccines] = useState([]);
   const { signOut } = useClerk();
-
   const { userId, user } = useAuth();
 
   const userFirstName =
@@ -32,38 +29,29 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchBaby = async () => {
-      if (!userId) {
-        setLoading(false);
-        return;
-      }
+      if (!userId) return setLoading(false);
 
       try {
         setLoading(true);
         const res = await api.get(`/babies/user/${userId}`);
 
-       
         const babiesData = res.data.babies || res.data;
-
         if (Array.isArray(babiesData) && babiesData.length > 0) {
           const babyData = babiesData[0];
-
-         
-          setBaby(babyData); 
+          setBaby(babyData);
 
           const pending = babyData.vaccineSchedule.filter(
-            (v) => v.status === "Pending" || v.status === "pending"
+            (v) => v.status.toLowerCase() === "pending"
           );
           const completed = babyData.vaccineSchedule.filter(
-            (v) => v.status === "Completed" || v.status === "completed"
+            (v) => v.status.toLowerCase() === "completed"
           );
 
           setPendingVaccines(pending);
           setCompletedVaccines(completed);
-        } else {
-          setBaby(null);
         }
       } catch (err) {
-        console.error("Error fetching baby:", err);
+        console.error(err);
         setError(err);
       } finally {
         setLoading(false);
@@ -73,126 +61,126 @@ export default function Dashboard() {
     fetchBaby();
   }, [userId]);
 
-  
+  // vaccine update handler
   const handleVaccineUpdate = async (vaccineId, newStatus) => {
     try {
-      
       await api.put(`/vaccines/${vaccineId}`, { status: newStatus });
 
-      const moveVaccine = (targetListSetter, sourceListSetter, status) => {
-        let itemToMove;
-
-        sourceListSetter((prevSource) => {
-          const index = prevSource.findIndex((v) => v._id === vaccineId);
-          if (index !== -1) {
-            itemToMove = prevSource[index];
-            return prevSource.filter((v) => v._id !== vaccineId);
-          }
-          return prevSource;
-        });
-
-        if (itemToMove) {
-          targetListSetter((prevTarget) => [
-            ...prevTarget,
-            { ...itemToMove, status },
-          ]);
-        }
-      };
-
       if (newStatus === "completed") {
-        moveVaccine(setCompletedVaccines, setPendingVaccines, newStatus);
-      } else if (newStatus === "pending") {
-        moveVaccine(setPendingVaccines, setCompletedVaccines, newStatus);
+        const item = pendingVaccines.find((v) => v._id === vaccineId);
+        if (item) {
+          setPendingVaccines((prev) =>
+            prev.filter((v) => v._id !== vaccineId)
+          );
+          setCompletedVaccines((prev) => [...prev, { ...item, status: "completed" }]);
+        }
+      } else {
+        const item = completedVaccines.find((v) => v._id === vaccineId);
+        if (item) {
+          setCompletedVaccines((prev) =>
+            prev.filter((v) => v._id !== vaccineId)
+          );
+          setPendingVaccines((prev) => [...prev, { ...item, status: "pending" }]);
+        }
       }
-    } catch (error) {
-      console.error("Error updating vaccine status:", error);
+    } catch (err) {
+      console.error("Error updating vaccine", err);
     }
   };
 
-  
-  if (loading) return <div className="p-10 text-center"><P>Loading baby info...</P></div>;
-  
- 
+  if (loading)
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-purple-50">
+        <P className="text-purple-600">Loading your dashboard...</P>
+      </div>
+    );
+
   if (!baby) {
     return (
-      <div className="min-h-screen bg-[#f4f8fb] pt-20 px-4">
-        <Card className="p-10 max-w-lg mx-auto text-center space-y-4 shadow-xl">
-          <H as="h2" className="text-3xl font-extrabold text-sky-700">
+      <div className="min-h-screen bg-purple-50 pt-20 px-4">
+        <Card className="p-10 max-w-lg mx-auto text-center space-y-4 shadow-lg border border-purple-200 bg-white">
+          <H as="h2" className="text-3xl font-extrabold text-purple-700">
             Welcome to MyChanjo App!
           </H>
           <P className="text-lg text-gray-600">
-            Create a profile for your baby to start tracking their schedule.
+            Start by creating a profile for your baby.
           </P>
           <Button
             onClick={() => navigate("/add-baby")}
             variant="primary"
+            className="bg-purple-500 hover:bg-purple-600 text-white"
           >
-            Add Your Baby Now 👶
+            Add Baby Profile 👶
           </Button>
         </Card>
       </div>
     );
   }
 
-  // Render the Dashboard
   return (
-    <div className="min-h-screen bg-[#f4f8fb] pt-10">
-      
-      <div className="p-6 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-extrabold text-gray-800">
-            👋 Welcome Back, {userFirstName}
-            </h1>
-            <Button onClick={() => signOut({ redirectUrl: "/" })} variant="outline">
+    <div className="min-h-screen bg-purple-50 pt-6 pb-10">
+      <div className="max-w-5xl mx-auto px-4 space-y-6">
+
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <H
+            as="h1"
+            size="xl"
+            className="text-purple-700 font-bold"
+          >
+            👋 Hello, {userFirstName}
+          </H>
+
+          <Button
+            onClick={() => signOut({ redirectUrl: "/" })}
+            variant="outline"
+            className="border-purple-300 text-purple-700 hover:bg-purple-100"
+          >
             Log Out
-            </Button>
+          </Button>
         </div>
 
-        <div className="space-y-8">
-            {/* Baby Profile Section */}
-            <Card className="p-6">
-            <div className="mt-6">
-                <BabyProfile baby={baby} />
-            </div>
-            </Card>
+        {/* Baby Profile */}
+        <Card className="p-5 shadow-md rounded-xl border border-purple-200 bg-white">
+          <BabyProfile baby={baby} />
+        </Card>
 
-            {/* Calendar Section */}
-            <Card className="p-6 mb-8">
-                <H size="lg" className="mb-4">
-                    Vaccination Calendar
-                </H>
-                <VaccineCalendar
-                    baby={baby}
-                    onChange={setSelectedDate}
-                    value={selectedDate}
-                    className="mx-auto"
-                />
-            </Card>
+        {/* Calendar Section */}
+        <Card className="p-5 shadow-md rounded-xl border border-purple-200 bg-white">
+          <H size="lg" className="mb-4 text-purple-700 font-semibold">
+            Vaccination Calendar
+          </H>
 
-            {/* Vaccine Schedule Section */}
-            <div className="grid md:grid-cols-2 gap-6">
-            
-            <VaccineList
-                vaccines={pendingVaccines}
-                title="Pending Vaccines"
-                emptyMessage="No pending vaccines 🎉"
-                onVaccineUpdate={handleVaccineUpdate}
-            />
+          <div className="flex justify-center">
+            <VaccineCalendar baby={baby} />
+          </div>
+        </Card>
 
-           
-            <VaccineList
-                vaccines={completedVaccines}
-                title="Completed Vaccines"
-                emptyMessage="No completed vaccines yet"
-                onVaccineUpdate={handleVaccineUpdate}
-            />
-            </div>
+        {/* Vaccine Schedule Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <VaccineList
+            vaccines={pendingVaccines}
+            title="🕒 Pending Vaccines"
+            emptyMessage="No pending vaccines 🎉"
+            onVaccineUpdate={handleVaccineUpdate}
+          />
 
-            <div className="mt-8 text-center">
-                <Button onClick={() => navigate("/resources")}>
-                    Explore Resources
-                </Button>
-            </div>
+          <VaccineList
+            vaccines={completedVaccines}
+            title="✅ Completed Vaccines"
+            emptyMessage="No completed vaccines yet"
+            onVaccineUpdate={handleVaccineUpdate}
+          />
+        </div>
+
+        {/* Resources Button */}
+        <div className="text-center pt-3">
+          <Button
+            onClick={() => navigate("/resources")}
+            className="bg-purple-500 hover:bg-purple-600 text-white"
+          >
+            Explore Resources
+          </Button>
         </div>
       </div>
     </div>

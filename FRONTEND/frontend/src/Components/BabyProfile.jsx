@@ -34,8 +34,9 @@ export default function BabyProfileCard({ baby }) {
 
   return (
     <div className="flex items-center gap-6">
-     
-      <div className="w-24 h-24 rounded-full border-4 border-sky-300 overflow-hidden bg-sky-100 flex items-center justify-center">
+
+      {/* Baby Avatar */}
+      <div className="w-24 h-24 rounded-full border-4 border-purple-300 overflow-hidden bg-purple-100 flex items-center justify-center">
         {baby.photoUrl ? (
           <img
             src={baby.photoUrl}
@@ -43,22 +44,31 @@ export default function BabyProfileCard({ baby }) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <span className="text-2xl font-bold text-sky-600">
+          <span className="text-2xl font-bold text-purple-700">
             {getInitials(baby.name)}
           </span>
         )}
       </div>
 
-     
+      {/* Baby Info */}
       <div>
-        <H size="lg">{baby.name}</H>
+        <H size="lg" className="text-purple-800 font-semibold">
+          {baby.name}
+        </H>
+
         <P className="text-gray-600">
           Born: {new Date(baby.dateOfBirth).toLocaleDateString()}
         </P>
-        <P className="font-semibold text-sky-600">
+
+        <P className="font-semibold text-purple-600">
           Age: {calculateAge(baby.dateOfBirth)}
         </P>
       </div>
     </div>
   );
 }
+
+
+
+
+

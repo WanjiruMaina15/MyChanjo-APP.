@@ -15,7 +15,7 @@ export default function Card({
       onClick={onClick}
       {...props}
     >
-      {/* Title Section */}
+      
       {title && (
         <h3 className="font-quicksand text-xl text-[#0b2545] mb-3">
           {title}
