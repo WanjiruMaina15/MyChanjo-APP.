@@ -7,11 +7,11 @@ export default function Header() {
   <div className="container mx-auto text-center px-4">
     
     
-    <H as="h1" className="text-3xl font-bold tracking-wide text-white">
+    <H as="h1" className="text-3xl font-bold tracking-wide text [#0b2545]">
       MyChanjo
     </H>
     
-    <P className="text-lg mt-1 font-medium tracking-wide leading-snug text-white/90">
+    <P className="text-lg mt-1 font-medium tracking-wide leading-snug text-sm [#0b2545]">
           Keep track of your child’s immunization easily and on time.
         </P>
       </div>

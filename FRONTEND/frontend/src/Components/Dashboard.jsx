@@ -127,13 +127,13 @@ export default function Dashboard() {
             size="xl"
             className="text-gray font-bold"
           >
-            Hello, 
+            Welome Back!!
           </H>
 
           <Button
             onClick={() => signOut({ redirectUrl: "/" })}
             variant="outline"
-            className="border-purple-300 text-purple-700 hover:bg-purple-100"
+            className="bg-[#0b2545] hover: text-white"
           >
             Log Out
           </Button>
@@ -173,7 +173,7 @@ export default function Dashboard() {
         <div className="text-center pt-3">
           <Button
             onClick={() => navigate("/resources")}
-            className="bg-purple-500 hover:bg-purple-600 text-white"
+            className="bg-[#0b2545] hover: text-white"
           >
             Resources
           </Button>
