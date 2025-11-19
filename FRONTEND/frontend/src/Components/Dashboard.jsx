@@ -61,7 +61,6 @@ export default function Dashboard() {
     fetchBaby();
   }, [userId]);
 
-  // vaccine update handler
   const handleVaccineUpdate = async (vaccineId, newStatus) => {
     try {
       await api.put(`/vaccines/${vaccineId}`, { status: newStatus });
@@ -140,7 +139,6 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        {/* Baby Profile */}
         <Card className="p-5 shadow-md rounded-xl border border-purple-200 bg-white">
           <BabyProfile baby={baby} />
         </Card>
