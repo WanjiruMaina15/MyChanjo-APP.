@@ -35,7 +35,7 @@ export default function BabyProfileCard({ baby }) {
   return (
     <div className="flex items-center gap-6">
 
-      {/* Baby Avatar */}
+     
       <div className="w-24 h-24 rounded-full border-4 border-purple-300 overflow-hidden bg-purple-100 flex items-center justify-center">
         {baby.photoUrl ? (
           <img
@@ -50,7 +50,7 @@ export default function BabyProfileCard({ baby }) {
         )}
       </div>
 
-      {/* Baby Info */}
+     
       <div>
         <H size="lg" className="text-purple-800 font-semibold">
           {baby.name}

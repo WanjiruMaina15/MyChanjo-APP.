@@ -160,7 +160,7 @@ export default function BabyInfoPage() {
         ...(formData.photoUrl && { photoUrl: formData.photoUrl }),
       };
 
-      console.log("Sending payload:", payload); // Debug log
+      console.log("Sending payload:", payload); 
 
       const response = await api.post("/babies", payload);
 
@@ -194,7 +194,7 @@ export default function BabyInfoPage() {
           Add New Baby
         </H>
         <P className="text-center mb-6 text-[#0b2545]">
-          Please provide your baby's details 💜
+          Please provide your baby's details 
         </P>
 
         <div className="flex flex-col items-center mb-6">
@@ -319,7 +319,7 @@ export default function BabyInfoPage() {
           )}
 
           <Button type="submit" disabled={loading}>
-            {loading ? "Saving..." : "Save Baby Info & Generate Schedule"}
+            {loading ? "Saving..." : "SAVE"}
           </Button>
         </form>
       </Card>

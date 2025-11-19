@@ -102,14 +102,14 @@ export default function Dashboard() {
             Welcome to MyChanjo App!
           </H>
           <P className="text-lg text-gray-600">
-            Start by creating a profile for your baby.
+           CREATE BABY'S PROFILE.
           </P>
           <Button
             onClick={() => navigate("/add-baby")}
             variant="primary"
             className="bg-purple-500 hover:bg-purple-600 text-white"
           >
-            Add Baby Profile 👶
+           CREATE
           </Button>
         </Card>
       </div>
@@ -143,7 +143,6 @@ export default function Dashboard() {
           <BabyProfile baby={baby} />
         </Card>
 
-        {/* Calendar Section */}
         <Card className="p-5 shadow-md rounded-xl border border-purple-200 bg-white">
           <H size="lg" className="mb-4 text-purple-700 font-semibold">
             Vaccination Calendar
@@ -154,18 +153,17 @@ export default function Dashboard() {
           </div>
         </Card>
 
-        {/* Vaccine Schedule Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <VaccineList
             vaccines={pendingVaccines}
-            title="🕒 Pending Vaccines"
-            emptyMessage="No pending vaccines 🎉"
+            title=" Pending Vaccines"
+            emptyMessage="No pending vaccines"
             onVaccineUpdate={handleVaccineUpdate}
           />
 
           <VaccineList
             vaccines={completedVaccines}
-            title="✅ Completed Vaccines"
+            title="Completed Vaccines"
             emptyMessage="No completed vaccines yet"
             onVaccineUpdate={handleVaccineUpdate}
           />
@@ -177,7 +175,7 @@ export default function Dashboard() {
             onClick={() => navigate("/resources")}
             className="bg-purple-500 hover:bg-purple-600 text-white"
           >
-            Explore Resources
+            Resources
           </Button>
         </div>
       </div>

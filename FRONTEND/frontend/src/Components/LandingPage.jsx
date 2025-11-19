@@ -6,12 +6,12 @@ import Button from "./ReusableComponents/Buttons";
 export default function LandingPage() {
   const navigate = useNavigate();
 
-  const [message, setMessage] = useState("Karibu MyChanjo! 💙");
+  const [message, setMessage] = useState("Karibu MyChanjo! ");
 
   
   useEffect(() => {
     const timer = setTimeout(() => {
-      setMessage("Afya yako, chanjo zako, kwa urahisi. 💜");
+      setMessage("Afya yako, chanjo zako, kwa urahisi. ");
     }, 3000);
 
    

@@ -11,17 +11,17 @@ export default function AnotherChild() {
       className="min-h-screen flex flex-col items-center justify-center text-center"
       style={{
         backgroundImage:
-          "linear-gradient(to bottom right, #e6f0ff, #f2e6ff)", // same baby blue & lilac gradient
+          "linear-gradient(to bottom right, #e6f0ff, #f2e6ff)", 
       }}
     >
       <div className="bg-white/80 p-10 rounded-2xl shadow-lg max-w-md">
         <H as="h1" className="text-4xl font-bold mb-4 text-[#0b2545]">
-          Ongeza Mtoto Mwingine 👶
+          Ongeza Mtoto Mwingine 
         </H>
 
         <P className="text-lg mb-8 text-[#0b2545]">
           Tafadhali ongeza taarifa za mtoto mwingine ili kufuatilia chanjo zake
-          kwa urahisi. 💙
+          kwa urahisi. 
         </P>
 
         <div className="flex justify-center gap-6">
@@ -32,4 +32,3 @@ export default function AnotherChild() {
     </div>
   );
 }
-// This component allows users to navigate to add another child or return to the dashboard.

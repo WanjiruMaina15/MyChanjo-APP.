@@ -14,7 +14,7 @@ const Resources = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // ✅ Fetch both tips and FAQs using Axios
+       
         const [tipsRes, faqsRes] = await Promise.all([
           api.get("/resources/tips"),
           api.get("/resources/faqs"),

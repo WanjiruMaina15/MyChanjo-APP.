@@ -22,7 +22,7 @@ export default function Card({
         </h3>
       )}
 
-      {/* Content Section */}
+   
       <div className="font-lato text-[#0b2545] leading-relaxed">
         {children}
       </div>

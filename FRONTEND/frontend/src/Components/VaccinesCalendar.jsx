@@ -22,7 +22,7 @@ export default function VaccineCalendar({ baby }) {
     setSelectedVaccine(events);
   };
 
-  // Color-coded dots on the calendar
+  
   const tileContent = ({ date, view }) => {
     if (view !== 'month') return null;
 

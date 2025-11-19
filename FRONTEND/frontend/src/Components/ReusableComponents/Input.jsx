@@ -9,25 +9,24 @@ export default function Input({
   value,
   onChange,
   error,
-  icon, // optional icon
+  icon, 
   className = "",
   ...props
 }) {
   return (
     <div className={`flex flex-col mb-4 ${className}`}>
-      {/* Label */}
+     
       {label && (
         <label className="font-quicksand text-[#0b2545] mb-1 text-sm">
           {label}
         </label>
       )}
 
-      {/* Input container (for icon + input alignment) */}
       <div className="relative flex items-center">
-        {/* Icon (if provided) */}
+      
         {icon && <span className="absolute left-3 text-[#b57edc]">{icon}</span>}
 
-        {/* Input Field */}
+      
         <input
           type={type}
           value={value}
@@ -40,7 +39,6 @@ export default function Input({
         />
       </div>
 
-      {/* Error Message */}
       {error && <P className="text-red-500 text-xs mt-1">{error}</P>}
     </div>
   );

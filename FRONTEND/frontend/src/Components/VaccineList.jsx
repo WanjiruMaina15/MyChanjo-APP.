@@ -11,20 +11,20 @@ export default function VaccineList({
   onVaccineUpdate,
 }) {
 
-  // THEMED STATUS BADGES
+ 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case "completed":
       case "given":
-        // Soft baby blue
+       
         return "bg-blue-100 text-blue-700 border border-blue-300";
 
       case "pending":
-        // Soft lilac
+      
         return "bg-purple-100 text-purple-700 border border-purple-300";
 
       case "overdue":
-        // Deeper lilac (warning but on-theme)
+        
         return "bg-purple-200 text-purple-800 border border-purple-400";
 
       default:
@@ -32,7 +32,6 @@ export default function VaccineList({
     }
   };
 
-  // EMPTY STATE
   if (!vaccines || vaccines.length === 0) {
     return (
       <Card className="p-6 shadow-sm bg-white border border-purple-100">
@@ -45,12 +44,12 @@ export default function VaccineList({
 
   return (
     <div className="space-y-4">
-      {/* Title */}
+     
       <H size="lg" className="font-semibold text-purple-700 mb-2">
         {title}
       </H>
 
-      {/* Vaccine Cards */}
+     
       <div className="grid gap-4">
         {vaccines.map((vaccine) => (
           <Card
@@ -62,7 +61,7 @@ export default function VaccineList({
                 {vaccine.name}
               </H>
 
-              {/* Status Badge */}
+             
               <span
                 className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(
                   vaccine.status
@@ -72,19 +71,19 @@ export default function VaccineList({
               </span>
             </div>
 
-            {/* Purpose */}
+          
             <P className="text-sm text-gray-700 mb-1">
               {vaccine.purpose?.length
                 ? vaccine.purpose.join(", ")
                 : "No description available"}
             </P>
 
-            {/* Recommended Age */}
+           
             <P className="text-xs text-gray-500 mb-3">
               Recommended Age: {vaccine.recommendedAge || "N/A"}
             </P>
 
-            {/* Action Buttons */}
+           
             {onVaccineUpdate && (
               <div className="pt-2 border-t border-purple-100 mt-3">
                 {vaccine.status?.toLowerCase() !== "completed" ? (
@@ -94,7 +93,7 @@ export default function VaccineList({
                     variant="primary"
                     className="w-full bg-purple-500 hover:bg-purple-600 text-white"
                   >
-                    Mark as Completed
+                    RECEIVED
                   </Button>
                 ) : (
                   <Button
@@ -103,7 +102,7 @@ export default function VaccineList({
                     variant="outline"
                     className="w-full border-purple-400 text-purple-600 hover:bg-purple-50"
                   >
-                    Undo Completion
+                    UNDO
                   </Button>
                 )}
               </div>

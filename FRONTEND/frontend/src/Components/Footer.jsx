@@ -11,7 +11,7 @@ export default function Footer() {
           MyChanjo
         </P>
         <P className="text-sm mt-1 font-medium opacity-90">
-          Afya yako, chanjo zako, kwa urahisi 💙💜
+          Afya yako, chanjo zako, kwa urahisi 
         </P>
 
         <div className="flex justify-center gap-6 mt-5 text-sm font-lato font-semibold">
