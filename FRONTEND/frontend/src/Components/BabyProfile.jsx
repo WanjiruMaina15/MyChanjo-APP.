@@ -60,7 +60,7 @@ export default function BabyProfileCard({ baby }) {
           Born: {new Date(baby.dateOfBirth).toLocaleDateString()}
         </P>
 
-        <P className="font-semibold text-purple-600">
+        <P className="font-semibold text-gray-700">
           Age: {calculateAge(baby.dateOfBirth)}
         </P>
       </div>

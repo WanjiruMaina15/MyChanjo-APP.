@@ -125,9 +125,9 @@ export default function Dashboard() {
           <H
             as="h1"
             size="xl"
-            className="text-purple-700 font-bold"
+            className="text-gray font-bold"
           >
-            Hello, {userFirstName}
+            Hello, 
           </H>
 
           <Button
@@ -144,7 +144,7 @@ export default function Dashboard() {
         </Card>
 
         <Card className="p-5 shadow-md rounded-xl border border-purple-200 bg-white">
-          <H size="lg" className="mb-4 text-purple-700 font-semibold">
+          <H size="lg" className="mb-4 text-gray font-semibold">
             Vaccination Calendar
           </H>
 
