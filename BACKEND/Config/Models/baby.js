@@ -14,10 +14,12 @@ const vaccineScheduleSchema = new mongoose.Schema({
     enum: ['pending', 'completed', 'missed'],
     default: 'pending',
   },
-  vaccineId: {
+   vaccineId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Vaccine',
   },
+  purpose: { type: [String] },       
+  recommendedAge: { type: String }
 });
 
 const babySchema = new mongoose.Schema({

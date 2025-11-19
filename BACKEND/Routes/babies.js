@@ -76,6 +76,8 @@ router.post('/', async (req, res) => {
         date: dueDate,
         status: 'pending',
         vaccineId: template._id,
+        purpose: template.purpose,
+        recommendedAge: template.recommendedAge
       };
     });
 
@@ -99,6 +101,37 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Server error: Failed to generate schedule.' });
   }
 });
+router.put('/vaccine/:scheduleId', async (req, res) => {
+  const { status } = req.body;
+  const scheduleId = req.params.scheduleId;
+
+  if (!['pending', 'completed', 'missed', 'overdue'].includes(status)) {
+    return res.status(400).json({ message: "Invalid status value" });
+  }
+
+  try {
+   
+    const updatedBaby = await Baby.findOneAndUpdate(
+      { "vaccineSchedule._id": scheduleId },
+      { 
+        $set: { 
+          "vaccineSchedule.$.status": status 
+        } 
+      },
+      { new: true } 
+    );
+
+    if (!updatedBaby) {
+      return res.status(404).json({ message: "Schedule item not found" });
+    }
+
+    res.json({ message: "Status updated", baby: updatedBaby });
+  } catch (err) {
+    console.error("Error updating schedule:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 
 module.exports = router;
