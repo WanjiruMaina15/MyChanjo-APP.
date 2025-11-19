@@ -61,15 +61,7 @@ export default function VaccineList({
                 {vaccine.name}
               </H>
 
-             
-              <span
-                className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                  vaccine.status
-                )}`}
-              >
-                {vaccine.status}
-              </span>
-            </div>
+             </div>
 
           
             <P className="text-sm text-gray-700 mb-1">
@@ -91,7 +83,7 @@ export default function VaccineList({
                     onClick={() => onVaccineUpdate(vaccine._id, "completed")}
                     size="sm"
                     variant="primary"
-                    className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+                    className="w-auto px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-300 hover:bg-blue-200 rounded transition-colors shadow-sm"
                   >
                     RECEIVED
                   </Button>
@@ -100,8 +92,9 @@ export default function VaccineList({
                     onClick={() => onVaccineUpdate(vaccine._id, "pending")}
                     size="sm"
                     variant="outline"
-                    className="w-full border-purple-400 text-purple-600 hover:bg-purple-50"
+                    className="w-auto px-4 py-2 text-sm font-medium bg-gray-600 hover:bg-gray-700 text-white rounded-lg"
                   >
+                  
                     UNDO
                   </Button>
                 )}
