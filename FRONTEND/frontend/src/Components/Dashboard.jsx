@@ -63,7 +63,7 @@ export default function Dashboard() {
 
   const handleVaccineUpdate = async (vaccineId, newStatus) => {
     try {
-      await api.put(`/vaccines/${vaccineId}`, { status: newStatus });
+      await api.put(`babies/vaccines/${vaccineId}`, { status: newStatus });
 
       if (newStatus === "completed") {
         const item = pendingVaccines.find((v) => v._id === vaccineId);
@@ -171,7 +171,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Resources Button */}
+   
         <div className="text-center pt-3">
           <Button
             onClick={() => navigate("/resources")}

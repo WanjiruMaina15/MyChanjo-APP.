@@ -33,8 +33,8 @@ const Resources = () => {
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
-      <Header />
-      {/* Header and Section Toggles */}
+  
+
       <div className="flex justify-between items-center bg-white p-4 shadow-md rounded-lg">
         <H as="h2" className="text-2xl font-bold text-[#0b2545]">Baby Care Resources</H>
         <div className="space-x-2">
@@ -53,10 +53,8 @@ const Resources = () => {
         </div>
       </div>
 
-      {/* Error Handling */}
       {error && <P className="text-red-500 text-center text-lg">{error}</P>}
 
-      {/* Tips Section */}
       {activeSection === "tips" && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tips.length > 0 ? (
@@ -74,7 +72,6 @@ const Resources = () => {
         </div>
       )}
 
-      {/* FAQs Section */}
       {activeSection === "faqs" && (
         <div className="space-y-4">
           {faqs.length > 0 ? (
