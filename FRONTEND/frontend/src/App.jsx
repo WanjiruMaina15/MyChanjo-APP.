@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import 'react-calendar/dist/Calendar.css';
 import Header from './Components/Header'
 import Footer from './Components/Footer'
-import SignInPage from './Components/Auth'
+import SignInPage from './Components/SignInPage'
+import SignInpPage from './Components/SignUpPage'
 import Dashboard from './Components/Dashboard'
 import Resources from './Components/ResourcesPage'
 import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
