@@ -36,7 +36,7 @@ export default function LandingPage() {
         </P>
 
         <div className="flex justify-center gap-6">
-          <Button onClick={() => navigate("/register")}>Jisajili</Button>
+          <Button onClick={() => navigate("/SignUp")}>Jisajili</Button>
           <Button onClick={() => navigate("/login")}>Ingia</Button>
         </div>
       </div>

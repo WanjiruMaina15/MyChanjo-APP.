@@ -121,14 +121,14 @@ export default function Dashboard() {
     <div className="min-h-screen bg-purple-50 pt-6 pb-10">
       <div className="max-w-5xl mx-auto px-4 space-y-6">
 
-        {/* Header */}
+       
         <div className="flex justify-between items-center">
           <H
             as="h1"
             size="xl"
             className="text-purple-700 font-bold"
           >
-            👋 Hello, {userFirstName}
+            Hello, {userFirstName}
           </H>
 
           <Button
