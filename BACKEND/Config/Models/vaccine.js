@@ -14,6 +14,7 @@ const vaccineSchema = new mongoose.Schema({
     type: String, // e.g. "At birth", "6 weeks", "9 months"
     required: true,
   },
+  
   createdAt: {
     type: Date,
     default: Date.now,
