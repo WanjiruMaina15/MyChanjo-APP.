@@ -11,7 +11,7 @@ const app = express();
 //MIDDLEWARE TO ENABLE CORS
 // ✅ Enable CORS
 app.use(cors({
-  origin: 'https://my-chanjo-app.vercel.app', // your React frontend URL
+  origin: 'https://my-chanjo-app.vercel.app',
   credentials: true
 }));
 //MIDDLEWARE TO PARSE JSON REQUESTS

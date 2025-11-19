@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-// 🍼 Baby care tips
+
 const babyCareTips = [
   "Keep your baby’s immunization schedule up to date.",
   "Always wash your hands before touching your baby.",
@@ -21,7 +21,6 @@ const babyCareTips = [
   "Visit your pediatrician regularly for check-ups."
 ];
 
-// ❓ Frequently Asked Questions
 const faqs = [
   { question: "When should my baby get their first vaccine?", answer: "At birth — usually the BCG and polio vaccines." },
   { question: "What if my baby misses a vaccination date?", answer: "Visit your nearest health center as soon as possible. The schedule will be adjusted." },
@@ -41,7 +40,6 @@ const faqs = [
 ];
 
 
-//CRUD routes for resources
 router.get('/tips', (req, res) => {
   res.json(babyCareTips);
 });
