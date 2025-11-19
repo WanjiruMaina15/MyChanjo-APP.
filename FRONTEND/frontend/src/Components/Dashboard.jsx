@@ -63,7 +63,7 @@ export default function Dashboard() {
 
   const handleVaccineUpdate = async (vaccineId, newStatus) => {
     try {
-      await api.put(`babies/vaccines/${vaccineId}`, { status: newStatus });
+      await api.put(`babies/vaccine/${vaccineId}`, { status: newStatus });
 
       if (newStatus === "completed") {
         const item = pendingVaccines.find((v) => v._id === vaccineId);
