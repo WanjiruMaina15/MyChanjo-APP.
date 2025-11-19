@@ -19,10 +19,9 @@ export default function LandingPage() {
   }, []); 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center bg-[#e6f0ff] text-center"
+      className="min-h-screen flex flex-col items-center justify-center text-center rounded-3xl border-x-4 border-y-4 border-[#A0E7E5]"
       style={{
-        backgroundImage:
-          "linear-gradient(to bottom right, #e6f0ff, #f2e6ff)", 
+        backgroundImage: "linear-gradient(to bottom right, #e6f0ff, #f2e6ff)", 
       }}
     >
       <div className="bg-white/80 p-10 rounded-2xl shadow-lg max-w-md">
