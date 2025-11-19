@@ -3,7 +3,7 @@ import { H, P } from "./ReusableComponents/Typography";
 
 export default function Header() {
   return (
-   <header className="sticky top-0 left-0 w-full bg-[#E0B0FF] border-b-4 border-[#89CFF0] py-4 shadow-md z-50">
+   <header className="sticky top-0 left-0 w-full bg-gradient-to-b from-[#9b5edc]/30 to-purple-100 border-b-4 border-[#89CFF0] py-4 shadow-md z-50">
   <div className="container mx-auto text-center px-4">
     
     
