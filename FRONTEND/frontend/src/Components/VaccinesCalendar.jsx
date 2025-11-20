@@ -86,7 +86,7 @@ export default function VaccineCalendar({ baby }) {
 
       <div className="lg:w-1/2 w-full">
         <H as="h3" className="text-xl mb-3 text-[#0b2545]">
-         s for {value.toDateString()}
+        {value.toDateString()}
         </H>
         <Card className="p-4 min-h-[300px] border rounded-xl">
           {selectedVaccine.length > 0 ? (
@@ -129,7 +129,7 @@ export default function VaccineCalendar({ baby }) {
         </Card>
 
         <div className="mt-6">
-          <P className="text-sm font-semibold text-[#0b2545] mb-2">Legend</P>
+          <P className="text-sm font-semibold text-[#0b2545] mb-2">STATUS</P>
           <div className="flex gap-6 text-xs items-center">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-[#b3cde0]" />
